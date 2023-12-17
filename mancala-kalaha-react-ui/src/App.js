@@ -34,7 +34,9 @@ export default function Game() {
                     return "Winner is Player " + winner
                 }
                 window.alert(message());
+                window.localStorage.removeItem("MY_GAME_MANCALA")
                 setGame({});
+                return
             }
             setAHousePit((game.pits.length / 2) - 1)
             setBHousePit(game.pits.length - 1)
