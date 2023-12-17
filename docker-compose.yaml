@@ -1,0 +1,55 @@
+version: '3'
+services:
+
+  mongo-db:
+    image: mongo:6
+    container_name: 'game_mongodb'
+    ports:
+      - '27017:27017'
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - game
+
+#  redis-db:
+#    restart: always
+#    container_name: 'game_redis'
+#    image: redis
+#    ports:
+#      - '6379:6379'
+#    networks:
+#      - game
+
+  mancala-kalaha:
+    container_name: 'game_mancala_kalaha'
+    build: ./mancala-kalaha-service/.
+    ports:
+      - '8080:8080'
+    networks:
+      - game
+    restart: on-failure
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo-db
+      - SPRING_DATA_MONGODB_PORT=27017
+#      - SPRING_REDIS_HOST=redis-db
+#      - SPRING_REDIS_PORT=6379
+    depends_on:
+      - mongo-db
+#      - redis-db
+
+  frontend:
+    container_name: frontend
+    build: ./mancala-kalaha-react-ui
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    environment:
+      - WATCHPACK_POLLING=true
+    command: npm start
+
+networks:
+  game:
+    driver: bridge
+
+volumes:
+  dbdata:
