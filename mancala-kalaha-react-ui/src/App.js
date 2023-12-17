@@ -7,7 +7,8 @@ export default function Game() {
 
     const [game, setGame] = useState({
         pits: false,
-        currentPlayer: undefined
+        currentPlayer: undefined,
+        gameStatus: undefined
     })
 
     const [aLastPit, setALastPit] = useState(0)
@@ -23,7 +24,18 @@ export default function Game() {
     }, []);
 
     useEffect(() => {
-        if(game.pits) {
+        if (game.pits) {
+            if(game.gameStatus === 'COMPLETED') {
+                const message  = () => {
+                    if(game.pits[aHousePit] === game.pits[bHousePit]) {
+                        return "It was a draw game between player A and player B"
+                    }
+                    const winner  = game.pits[aHousePit] > game.pits[bHousePit] ? 'A' : 'B'
+                    return "Winner is Player " + winner
+                }
+                window.alert(message());
+                setGame({});
+            }
             setAHousePit((game.pits.length / 2) - 1)
             setBHousePit(game.pits.length - 1)
             setALastPit(aHousePit - 1)
@@ -45,11 +57,11 @@ export default function Game() {
         const currentMove = {'gameId': game.id, 'pitIndex': pitIndex, 'player': game.currentPlayer};
 
         axios.put('/move',
-                JSON.stringify(currentMove),
-        {headers: {'Content-Type': 'application/json;charset=UTF-8'}})
+            JSON.stringify(currentMove),
+            {headers: {'Content-Type': 'application/json;charset=UTF-8'}})
             .then(res => {
-            setGame(res.data)
-        }).catch(err => console.log(err))
+                setGame(res.data)
+            }).catch(err => console.log(err))
     };
 
     const endGame = (gameId) => {
@@ -66,7 +78,10 @@ export default function Game() {
             <div className={'message-banner'}>
                 <h4>Welcome to Mancala Kalaha Game</h4>
                 <button className='button' onClick={getGame} hidden={game.pits}>Start New Game</button>
-                <button className='button' onClick={()=> endGame(game.id) } hidden={!game.pits}>End Game</button>
+                <button className="button"
+                        hidden={!(game.pits) || game.gameStatus !== 'STARTED' }
+                        onClick={() => { if (window.confirm('Do you really want to end this game ?')) {endGame(game.id) } }
+                }>End Game</button>
             </div>
             {game.pits ?
                 <div>

@@ -6,10 +6,11 @@ import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Move {
     private String id;
     private String gameId;

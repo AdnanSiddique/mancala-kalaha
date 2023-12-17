@@ -14,7 +14,9 @@ import com.mancalakalaha.repository.GameRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 
@@ -61,7 +63,7 @@ public class GameServiceImpl implements GameService {
     public void endGame(String gameId) {
         Game game = getGameById(gameId);
         game.setGameStatus(GameStatus.ENDED);
-        gameRepository.save(game);
+        saveGame(game);
     }
 
     @Override
@@ -113,11 +115,9 @@ public class GameServiceImpl implements GameService {
         game.getPits()[pitIndex] = 0;
 
         game.setCurrentPitIndex(pitIndex);
-        IntStream.range(0, stones - 1).forEach(index -> sowToRight(game, false));
-        sowToRight(game, true);
+        IntStream.range(0, stones) .forEach(index -> sowToRight(game, index == stones - 1));
 
-        int currentPitIndex = game.getCurrentPitIndex();
-        updateGameAfterSow(game, currentPitIndex, move);
+        updateGameAfterSow(game, game.getCurrentPitIndex(), move);
     }
 
     private void sowToRight(Game game, Boolean lastStone) {
@@ -135,17 +135,6 @@ public class GameServiceImpl implements GameService {
         handleOppositePit(game, targetPit, currentPitIndex);
     }
 
-    private void updateGameAfterSow(Game game, int currentPitIndex, MoveDto move) {
-        if (currentPitIndex != rightHouseIndex && currentPitIndex != leftHouseIndex) {
-            game.setNextPlayer();
-        }
-
-        LocalDateTime now = LocalDateTime.now();
-        game.setIndividualMove(generateMoveRecord(move.getGameId(), move.getPlayer(), move.getPitIndex(), now));
-        game.setUpdateDateTime(now);
-        saveGame(game);
-    }
-
     private void handleSowRightIndex(Game game, int currentPitIndex, Player playerTurn) {
         if ((currentPitIndex == rightHouseIndex && playerTurn == Player.B) ||
                 (currentPitIndex == leftHouseIndex && playerTurn == Player.A)) {
@@ -161,10 +150,10 @@ public class GameServiceImpl implements GameService {
     }
 
     private void handleOppositePit(Game game, int targetPit, int currentPitIndex) {
-        int oppositePit = game.getPits()[totalPits - currentPitIndex - 1];
+        int oppositeStones = game.getPits()[totalPits - currentPitIndex - 1];
 
-        if (targetPit == 0 && oppositePit != 0) {
-            handleEmptyTargetPit(game, oppositePit, currentPitIndex);
+        if (targetPit == 0 && oppositeStones != 0) {
+            handleEmptyTargetPit(game, oppositeStones, currentPitIndex);
             return;
         }
 
@@ -186,5 +175,39 @@ public class GameServiceImpl implements GameService {
                 .player(player)
                 .createDateTime(now)
                 .build();
+    }
+
+    private void updateGameAfterSow(Game game, int currentPitIndex, MoveDto move) {
+        updatePlayerTurn(game, currentPitIndex);
+        updateGameStatusIfCompleted(game);
+        updateGameMoveAndSave(game, move);
+    }
+
+    private void updatePlayerTurn(Game game, int currentPitIndex) {
+        if (currentPitIndex != rightHouseIndex && currentPitIndex != leftHouseIndex) {
+            game.setNextPlayer();
+        }
+    }
+
+    private void updateGameStatusIfCompleted(Game game) {
+        int countStonesPlayerA = countStonesInPits(game, 0, rightHouseIndex - 1);
+        int countStonesPlayerB = countStonesInPits(game, rightHouseIndex + 1, totalPits - 1);
+
+        if (countStonesPlayerA == 0 || countStonesPlayerB == 0) {
+            game.getPits()[rightHouseIndex] += countStonesPlayerA;
+            game.getPits()[leftHouseIndex] += countStonesPlayerB;
+            game.setGameStatus(GameStatus.COMPLETED);
+        }
+    }
+
+    private int countStonesInPits(Game game, int start, int end) {
+        return Arrays.stream(game.getPits(), start, end + 1).sum();
+    }
+
+    private void updateGameMoveAndSave(Game game, MoveDto move) {
+        LocalDateTime now = LocalDateTime.now();
+        game.setIndividualMove(generateMoveRecord(move.getGameId(), move.getPlayer(), move.getPitIndex(), now));
+        game.setUpdateDateTime(now);
+        saveGame(game);
     }
 }
