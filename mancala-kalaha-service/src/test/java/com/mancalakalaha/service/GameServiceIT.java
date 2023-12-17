@@ -43,6 +43,7 @@ public class GameServiceIT {
         testHelper = TestHelper.getInstance();
         gameService = Mockito.spy(new GameServiceImpl(gameConfig, gameRepository, modelMapper));
 
+        //Given
         when(gameConfig.getTotalPit()).thenReturn(14);
         when(gameConfig.getPitCount()).thenReturn(6);
         when(gameConfig.getStoneCount()).thenReturn(6);
@@ -92,6 +93,7 @@ public class GameServiceIT {
         when(gameRepository.save(any(Game.class))).thenReturn(testHelper.getGame());
         when(modelMapper.gameDtoFrom(any(Game.class))).thenReturn(testHelper.getGameDto());
 
+        //When //Then
         assertThrows(GameNotFoundException.class, () -> gameService.move(testHelper.getMoveDto()));
     }
 

@@ -29,11 +29,9 @@ public class GameControllerIT extends BaseMongoContainerIT {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private TestHelper testHelper;
+    private final TestHelper testHelper;
 
-
-    @BeforeEach
-    public void init() {
+    public GameControllerIT() {
         testHelper = TestHelper.getInstance();
     }
 

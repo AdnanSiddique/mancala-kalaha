@@ -4,18 +4,17 @@ import com.mancalakalaha.constant.GameStatus;
 import com.mancalakalaha.dto.GameDto;
 import com.mancalakalaha.model.Game;
 import com.mancalakalaha.utils.TestHelper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Spy;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class ModelMapperTest {
 
     private TestHelper testHelper;

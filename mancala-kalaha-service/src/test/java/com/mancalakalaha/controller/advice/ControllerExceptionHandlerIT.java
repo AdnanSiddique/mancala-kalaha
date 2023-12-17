@@ -22,16 +22,12 @@ class ControllerExceptionHandlerIT extends BaseMongoContainerIT {
 
     private final TestHelper testHelper = TestHelper.getInstance();
 
-    @Mock
-    private GameNotFoundException gameNotFoundException;
-
     @Autowired
     private MockMvc mockMvc;
 
 
     @Test
     void handleGameNotFoundException() throws Exception {
-        when(gameNotFoundException.getMessage()).thenReturn("Game not found with id ".concat(testHelper.TEST_GAME_ID));
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/game/end?gameId=".concat(testHelper.TEST_GAME_ID)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("Game not found with id ".concat(testHelper.TEST_GAME_ID)))
