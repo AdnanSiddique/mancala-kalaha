@@ -44,8 +44,14 @@ Follow these steps to run the Mancala Kahala Game:
     git clone https://github.com/AdnanSiddique/mancala-kalaha.git
     cd mancala-kahala
     ```
-   
-2. Run docker compose file:
+2. Build mancala-kalaha-service: 
+
+
+- Change the directory to **mancala-kalaha-service** and run ```bash ./mvnw clean install or .\mvnw clean install (Windows) ```. This will take a while to download the dependencies and build the jar file.
+
+
+
+3. Run docker compose file:
 
     ```bash
     docker-compose -f docker-compose.yaml up
