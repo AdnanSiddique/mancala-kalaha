@@ -22,7 +22,6 @@ public class ModelMapperIT {
 
     private TestHelper testHelper;
 
-
     @BeforeEach
     public void init() {
         testHelper = TestHelper.getInstance();

@@ -8,7 +8,6 @@ const GameBoard = ({ game, handleMove, aLastPit, bLastPit, aHousePit, bHousePit 
     return (
         <div>
             <div className={'alert'}>
-                <p>Welcome to Mancala Kalaha, a Strategic Board Game of Count and Capture.</p>
                 <p>Please note the following rules for playing game with 2 players (Player A and Player B).</p>
                 <ul>
                     <li>
@@ -21,19 +20,19 @@ const GameBoard = ({ game, handleMove, aLastPit, bLastPit, aHousePit, bHousePit 
             </div>
             <div className={'board-div'}>
                 <div>
-                    <PitButton disabled={true} className={'player-b-text board-house-pit'} stones={game.pits[bHousePit]} />
+                    <PitButton disabled={true} className={'player-b-pit board-house-pit'} stones={game.pits[bHousePit]} />
                 </div>
                 <div className={'player-pits-div'}>
                     <div>{renderedBPits}</div>
                     <div>{renderedAPits}</div>
                 </div>
                 <div>
-                    <PitButton disabled={true} className={'player-a-text board-house-pit'} stones={game.pits[aHousePit]} />
+                    <PitButton disabled={true} className={'player-a-pit board-house-pit'} stones={game.pits[aHousePit]} />
                 </div>
             </div>
             <div style={{marginTop: '30px'}}>
                 <hr className="dashed"/>
-                <h3 className={'message-banner'}>Turn of Player : {game.currentPlayer}</h3>
+                <h3 className={`border ${game.currentPlayer === 'A' ? 'linear-repeating-A' : 'linear-repeating-B'}`} >Turn of Player : {game.currentPlayer}</h3>
             </div>
 
             <ul>
@@ -59,7 +58,7 @@ const renderPits = (player, game, lastPit, housePit, handleMove) => {
         renderedPits.push(
             <PitButton
                     disabled={currentPlayer === (player === 'A' ? 'B' : 'A')}
-                    className={`pit player-${player.toLowerCase()}-text`}
+                    className={`pit player-${player.toLowerCase()}-pit`}
                     key={key}
                     onClick={() => handleMove(key)}
                     stones={stones}

@@ -34,7 +34,7 @@ public class ModelMapperTest {
         GameDto gameDto = modelMapper.gameDtoFrom(game);
 
         assertNotNull(gameDto);
-        assertNull(gameDto.getPits());
+        assertNotNull(gameDto.getPits());
         assertEquals(gameDto.getGameStatus(), GameStatus.STARTED);
         assertEquals(gameDto.getCurrentPlayer(), game.getCurrentPlayer());
         assertEquals(gameDto.getId(), game.getId());

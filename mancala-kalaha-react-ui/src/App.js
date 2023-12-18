@@ -77,8 +77,9 @@ export default function Game() {
 
     return (
         <div className={'game'}>
-            <div className={'message-banner'}>
-                <h4>Welcome to Mancala Kalaha Game</h4>
+            <div className={'linear-repeating border'}>
+                <h3>Welcome to Mancala Kalaha</h3>
+                <h4>A Strategic Board Game of Count and Capture.</h4>
                 <button className='button' onClick={getGame} hidden={game.pits}>Start New Game</button>
                 <button className="button"
                         hidden={!(game.pits) || game.gameStatus !== 'STARTED' }

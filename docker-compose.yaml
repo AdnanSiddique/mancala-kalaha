@@ -3,7 +3,7 @@ services:
 
   mongo-db:
     image: mongo:6
-    container_name: 'game_mongodb'
+    container_name: mongodb_mancala_kalaha
     ports:
       - '27017:27017'
     volumes:
@@ -21,7 +21,7 @@ services:
 #      - game
 
   mancala-kalaha:
-    container_name: 'game_mancala_kalaha'
+    container_name: backend_mancala_kalaha
     build: ./mancala-kalaha-service/.
     ports:
       - '8080:8080'
@@ -38,7 +38,7 @@ services:
 #      - redis-db
 
   frontend:
-    container_name: frontend
+    container_name: frontend_mancala_kalaha
     build: ./mancala-kalaha-react-ui
     ports:
       - "3000:3000"

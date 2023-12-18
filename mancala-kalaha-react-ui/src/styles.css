@@ -9,18 +9,18 @@ body {
 }
 
 h1 {
-    margin-top: 0;
-    font-size: 22px;
+    font-size: 34px;
+    font-family: serif;
 }
 
 h2 {
-    margin-top: 0;
-    font-size: 20px;
+    font-size: 30px;
+    font-family: serif;;
 }
 
 h3 {
-    margin-top: 0;
-    font-size: 18px;
+    font-size: 26px;
+    font-family: serif;
 }
 
 h4 {
@@ -53,7 +53,7 @@ body {
 }
 
 p{
-    font-size: small;
+    font-family: sans-serif;
 }
 
 .square {
@@ -87,8 +87,6 @@ p{
 }
 
 .button {
-
-    background-color: rgba(51, 51, 51, 0.05);
     border-radius: 8px;
     border-width: 0;
     color: #333333;
@@ -118,9 +116,12 @@ p{
 }
 
 .alert {
-    padding: 20px;
-    background-color: #A3B2C63B;
-    color: black;
+    background-color: #f0f7fb;
+    background-position: 9px 0px;
+    background-repeat: no-repeat;
+    border-left: solid 4px #3498db;
+    line-height: 18px;
+    padding: 4px 22px;
     margin-bottom: 15px;
 }
 
@@ -129,6 +130,20 @@ p{
 }
 
 .player-b-text {
+    color: blue ;
+}
+
+.player-a-pit {
+    border-width: 1px;
+    border-color: red !important;
+    border-style: dashed;
+    color: red ;
+}
+
+.player-b-pit {
+    border-width: 1px;
+    border-color: #365fb7 !important;
+    border-style: dashed;
     color: blue ;
 }
 
@@ -147,9 +162,74 @@ p{
     padding: 10px;
     text-align: center;
     margin: auto auto 10px;
-    border: 1px dotted #999999;
+    border: 5px ridge #ffffff;
+    background: #6e6e6e;
+    color: white;
+}
+
+.player-message-banner{
+    padding: 10px;
+    text-align: center;
+    margin: auto auto 10px;
+    border: 5px ridge #ffffff;
+    background: #6e6e6e;
+    color: white;
 }
 
 .player-pits-div {
     width: 685px
+}
+
+.border {
+    font-size: 1.6rem;
+    display: grid;
+    place-items: center;
+    border: 8px solid;
+    padding: 1rem;
+    margin-bottom: 10px
+}
+
+.linear-repeating-A {
+    border-width: 5px;
+    padding: 10px;
+    text-align: center;
+    margin: auto auto 10px;
+    border-image: repeating-linear-gradient(45deg, black, #ff647f 4%) 1;
+}
+
+.linear-repeating-B {
+    padding: 10px;
+    text-align: center;
+    margin: auto auto 10px;
+    border-width: 5px;
+    border-image: repeating-linear-gradient(45deg, black, #3987ff 4%) 1;
+}
+
+.linear-repeating {
+    border-width: 4px;
+    border-image: repeating-linear-gradient(56deg, #e9e9e9, #ffffff 4%) 1
+}
+
+.full-withradius {
+    position: relative;
+    background: #fff;
+    min-height: 200px;
+
+    background-clip: padding-box;
+
+    border: solid 8px transparent;
+    border-radius: 0.8rem;
+
+    &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        margin: -8px;
+        border-radius: inherit;
+        background: linear-gradient(to left, turquoise, greenyellow);
+    }
 }

@@ -1,7 +1,6 @@
 package com.mancalakalaha.controller.advice;
 
 import com.mancalakalaha.constant.Player;
-import com.mancalakalaha.controller.advice.ControllerExceptionHandler;
 import com.mancalakalaha.dto.ErrorResponseDto;
 import com.mancalakalaha.exception.GameNotFoundException;
 import com.mancalakalaha.exception.InvalidMoveException;

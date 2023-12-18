@@ -16,7 +16,11 @@ public class GameControllerTest {
     @Mock
     private GameController gameController;
 
-    TestHelper testHelper = TestHelper.getInstance();
+    private final TestHelper testHelper;
+
+    public GameControllerTest(){
+        testHelper = TestHelper.getInstance();
+    }
 
     @Test
     public void startGameTest() {
