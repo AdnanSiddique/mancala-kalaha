@@ -5,11 +5,9 @@ import com.mancalakalaha.constant.GameStatus;
 import com.mancalakalaha.dto.GameDto;
 import com.mancalakalaha.dto.MoveDto;
 import com.mancalakalaha.exception.GameNotFoundException;
-import com.mancalakalaha.exception.InvalidMoveException;
 import com.mancalakalaha.mapper.ModelMapper;
 import com.mancalakalaha.model.Game;
-import com.mancalakalaha.constant.Player;
-import com.mancalakalaha.model.Move;
+import com.mancalakalaha.model.GameFactory;
 import com.mancalakalaha.repository.GameRepository;
 import com.mancalakalaha.service.handler.MoveHandlerChain;
 import com.mancalakalaha.service.handler.SowHandler;
@@ -17,10 +15,7 @@ import com.mancalakalaha.service.handler.UpdateHandler;
 import com.mancalakalaha.service.handler.ValidationHandler;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.UUID;
-import java.util.stream.IntStream;
 
 
 @Service
@@ -38,7 +33,9 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameDto initializeGame() {
-        final Game game = createNewGame();
+        int stoneCount = gameConfig.getStoneCount();
+        int pitCount = gameConfig.getPitCount();
+        Game game = GameFactory.createGame(stoneCount, pitCount);
         saveGame(game);
         return mapToGameDto(game);
     }
@@ -47,12 +44,6 @@ public class GameServiceImpl implements GameService {
     public GameDto getGame(String gameId) {
         Game game = this.getGameById(gameId);
         return mapToGameDto(game);
-    }
-
-    private Game createNewGame() {
-        int stoneCount = gameConfig.getStoneCount();
-        int pitCount = gameConfig.getPitCount();
-        return new Game(stoneCount, pitCount);
     }
 
     @Override
@@ -89,5 +80,4 @@ public class GameServiceImpl implements GameService {
         return gameRepository.findById(gameId)
                 .orElseThrow(() -> new GameNotFoundException(gameId));
     }
-
 }

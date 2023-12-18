@@ -22,24 +22,36 @@ class ControllerExceptionHandlerTest {
     private ControllerExceptionHandler controllerExceptionHandler;
 
     @Test
-    void handleGameNotFoundException() {
+    void handleGameNotFoundException_ReturnsBadRequest() {
         GameNotFoundException exception = new GameNotFoundException("TEST");
-
-        ResponseEntity<ErrorResponseDto> responseEntity = controllerExceptionHandler.handleGameNotFoundException(exception);
-
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals("Game not found with id TEST", Objects.requireNonNull(responseEntity.getBody()).errorMessage());
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getBody().statusCode());
+        ResponseEntity<ErrorResponseDto> response = controllerExceptionHandler.handleGameNotFoundException(exception);
+        assertErrorResponse(response, "Game not found with id TEST", HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    void handleInvalidMoveException() {
+    void handleInvalidMoveException_ReturnsBadRequest() {
         InvalidMoveException exception = new InvalidMoveException(Player.A, 8);
+        ResponseEntity<ErrorResponseDto> response = controllerExceptionHandler.handleInvalidMoveException(exception);
+        assertErrorResponse(response, "Invalid move for Player A for pit 8", HttpStatus.BAD_REQUEST);
+    }
 
-        ResponseEntity<ErrorResponseDto> responseEntity = controllerExceptionHandler.handleInvalidMoveException(exception);
+    @Test
+    void handleGenericException_ReturnsInternalServerError() {
+        Exception exception = new Exception();
+        ResponseEntity<ErrorResponseDto> response = controllerExceptionHandler.handleGenericException(exception);
+        assertErrorResponse(response, "java.lang.Exception Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals("Invalid move for Player A for pit 8", Objects.requireNonNull(responseEntity.getBody()).errorMessage());
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getBody().statusCode());
+    @Test
+    void handleBadRequestException_ReturnsBadRequest() {
+        Exception exception = new IllegalArgumentException();
+        ResponseEntity<ErrorResponseDto> response = controllerExceptionHandler.handleBadRequestException(exception);
+        assertErrorResponse(response, "java.lang.IllegalArgumentException Bad Request", HttpStatus.BAD_REQUEST);
+    }
+
+    private void assertErrorResponse(ResponseEntity<ErrorResponseDto> response, String expectedErrorMessage, HttpStatus statusCode) {
+        assertEquals(statusCode, response.getStatusCode());
+        assertEquals(expectedErrorMessage, Objects.requireNonNull(response.getBody()).errorMessage());
+        assertEquals(statusCode, response.getBody().statusCode());
     }
 }

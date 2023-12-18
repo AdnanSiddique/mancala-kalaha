@@ -8,8 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -32,17 +30,13 @@ public class Game {
     @JsonIgnore
     @Transient
     private int currentPitIndex;
-    public Game(int stoneCount, int pitsCount) {
-        // making pits for 2 players and including 2 house pit for both players
 
-        pits = new int[(pitsCount * 2) + 2];
-        Arrays.fill(pits, 0, pitsCount, stoneCount);
-        Arrays.fill(pits, pitsCount + 1, pitsCount * 2 + 1, stoneCount);
-
-        currentPlayer = Player.A;
-        gameStatus = GameStatus.STARTED;
-        createDateTime = LocalDateTime.now();
-        moves = new ArrayList<>();
+    public Game(int[] pits, Player currentPlayer, GameStatus gameStatus, LocalDateTime createDateTime, List<Move> moves) {
+        this.pits = pits;
+        this.currentPlayer = currentPlayer;
+        this.gameStatus = gameStatus;
+        this.moves = moves;
+        this.createDateTime = createDateTime;
     }
 
     @Transient
