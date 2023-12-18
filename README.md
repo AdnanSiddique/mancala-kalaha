@@ -47,11 +47,11 @@ Follow these steps to run the Mancala Kahala Game:
 2. Build mancala-kalaha-service: 
 
 
-- Change the directory to **mancala-kalaha-service** and run ```bash ./mvnw clean install or .\mvnw clean install (Windows) ```. This will take a while to download the dependencies and build the jar file.
+- Change the directory to **mancala-kalaha-service** and run ```./mvnw clean install or .\mvnw clean install (Windows) ```. This will take a while to download the dependencies and build the jar file.
 
 
 
-3. Run docker compose file:
+3. Change directory back to mancala-kalaha and run docker compose file:
 
     ```bash
     docker-compose -f docker-compose.yaml up
